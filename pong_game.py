@@ -34,6 +34,8 @@ ball.penup()  # turtle default to drawing a line to movement and we dont want th
 ball.goto(0, 0)
 ball.x_speed = 3  #ball movement speed in x axis
 ball.y_speed = 2  #ball movement speed in y axis
+ball.x_saved = 0
+ball.y_saved = 0
 
 #pen
 pen = turtle.Turtle()
@@ -69,8 +71,17 @@ def paddle_b_down():
     current_y_coord -= 10
     paddle_b.sety(current_y_coord)
 
-
-
+def pause():
+    
+    if ball.x_speed > 0 or ball.x_speed < 0:
+        ball.x_saved = ball.x_speed
+        ball.y_saved = ball.y_speed
+        ball.x_speed = 0
+        ball.y_speed = 0
+    elif ball.x_speed == 0:
+        ball.x_speed = ball.x_saved
+        ball.y_speed = ball.y_saved
+       
 # keyBind
 
 wndw.listen()
@@ -78,7 +89,7 @@ wndw.onkeypress(paddle_a_up,"w")
 wndw.onkeypress(paddle_a_down,'s')
 wndw.onkeypress(paddle_b_up,'Up')
 wndw.onkeypress(paddle_b_down,'Down')
-
+wndw.onkeypress(pause, 'p')
 
 
 
