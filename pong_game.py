@@ -4,7 +4,7 @@ wndw = turtle.Screen()
 wndw.title('Jack\'s first game')
 wndw.bgcolor('white')
 wndw.setup(width=800, height=600)
-wndw.tracer(0)
+wndw.tracer(0) # stops window from updating so we have to manually update it, speeds up the game significantly
 
 # paddle A
 paddle_a = turtle.Turtle()
@@ -30,9 +30,10 @@ ball = turtle.Turtle()
 ball.speed(0)  # update speed to the fasted setting
 ball.shape('circle')
 ball.color('black')
+ball.shapesize(stretch_wid=0.5, stretch_len=0.5)
 ball.penup()  # turtle default to drawing a line to movement and we dont want that
 ball.goto(0, 0)
-ball.x_speed = 3  # ball movement speed in x axis
+ball.x_speed = 4  # ball movement speed in x axis
 ball.y_speed = 2  # ball movement speed in y axis
 ball.x_saved = 0  # for when you press the pause button it saves the previous 
 ball.y_saved = 0  # velocity so it can return to moving in the exact same fashion upon unpause
@@ -94,6 +95,8 @@ wndw.onkeypress(pause, 'p')
 
 
 # Main game loop
+
+
 while True:
     wndw.update()
 
@@ -115,15 +118,33 @@ while True:
     if ball.xcor() > 450:
         player_one_score += 1
         pen.clear()
-        pen.write(f'player 1: {player_one_score}                                           player 2: {player_two_score}',
+        if(player_one_score == 5):
+            ball.x_saved = ball.x_speed
+            ball.y_saved = ball.y_speed
+            ball.x_speed = 0
+            ball.y_speed = 0
+            pen.write('player 1 WINS!!!', align='center',
+                      font=('Arial', 30, 'normal'))
+        if player_one_score < 5:
+            pen.write(f'player 1: {player_one_score}                                           player 2: {player_two_score}',
                   align='center', font=('Arial', 22, 'normal'))
+        
         ball.goto(0, 0)
         ball.x_speed *= -1
 
     elif ball.xcor() < -450:
         player_two_score += 1
         pen.clear()
-        pen.write(f'player 1: {player_one_score}                                           player 2: {player_two_score}',
+        if(player_two_score == 5):
+            ball.x_saved = ball.x_speed
+            ball.y_saved = ball.y_speed
+            ball.x_speed = 0
+            ball.y_speed = 0
+            pen.write('player 2 WINS!!!', align='center',
+                      font=('Arial', 30, 'normal'))
+        if player_two_score < 5:
+            pen.write(f'player 1: {player_one_score}                                           player 2: {player_two_score}',
                   align='center', font=('Arial', 22, 'normal'))
+        
         ball.goto(0, 0)
         ball.x_speed *= -1
