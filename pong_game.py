@@ -32,10 +32,10 @@ ball.shape('circle')
 ball.color('black')
 ball.penup()  # turtle default to drawing a line to movement and we dont want that
 ball.goto(0, 0)
-ball.x_speed = 3  #ball movement speed in x axis
-ball.y_speed = 2  #ball movement speed in y axis
-ball.x_saved = 0
-ball.y_saved = 0
+ball.x_speed = 3  # ball movement speed in x axis
+ball.y_speed = 2  # ball movement speed in y axis
+ball.x_saved = 0  # for when you press the pause button it saves the previous 
+ball.y_saved = 0  # velocity so it can return to moving in the exact same fashion upon unpause
 
 #pen
 pen = turtle.Turtle()
@@ -71,8 +71,8 @@ def paddle_b_down():
     current_y_coord -= 10
     paddle_b.sety(current_y_coord)
 
+
 def pause():
-    
     if ball.x_speed > 0 or ball.x_speed < 0:
         ball.x_saved = ball.x_speed
         ball.y_saved = ball.y_speed
