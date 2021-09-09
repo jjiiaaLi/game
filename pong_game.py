@@ -32,8 +32,19 @@ ball.shape('circle')
 ball.color('black')
 ball.penup()  # turtle default to drawing a line to movement and we dont want that
 ball.goto(0, 0)
-ball.x_speed = 4  #ball movement speed in x axis
+ball.x_speed = 3  #ball movement speed in x axis
 ball.y_speed = 2  #ball movement speed in y axis
+
+#pen
+pen = turtle.Turtle()
+pen.speed(0)
+pen.color('black')
+pen.penup()  #every turtle obj starts at 0,0 and when it moves there will be a line draw and we dont want that
+pen.hideturtle()
+pen.goto(0, 260)
+player_one_score = 0
+player_two_score =0
+pen.write(f'player 1: {player_one_score}                                           player 2: {player_two_score}', align='center', font=('Arial',22,'normal'))
 
 # Move paddle functions
 def paddle_a_up():
@@ -58,6 +69,8 @@ def paddle_b_down():
     current_y_coord -= 10
     paddle_b.sety(current_y_coord)
 
+
+
 # keyBind
 
 wndw.listen()
@@ -65,6 +78,7 @@ wndw.onkeypress(paddle_a_up,"w")
 wndw.onkeypress(paddle_a_down,'s')
 wndw.onkeypress(paddle_b_up,'Up')
 wndw.onkeypress(paddle_b_down,'Down')
+
 
 
 
@@ -77,7 +91,7 @@ while True:
     ball.sety(ball.ycor() + ball.y_speed)
 
     # Bounce off top and bottom borders
-    if ball.ycor() > 290 or ball.ycor() < -285:
+    if ball.ycor() > 270 or ball.ycor() < -285:
         ball.y_speed *= -1
 
     if (ball.xcor() > 340 ) and ((paddle_b.ycor() - ball.ycor()) < 40 and (paddle_b.ycor() - ball.ycor()) > -40):
@@ -86,6 +100,19 @@ while True:
     if (ball.xcor() < -340) and ((paddle_a.ycor() -  ball.ycor())<40 and (paddle_a.ycor()- ball.ycor()>-40)):
         ball.x_speed *= -1
 
-    if ball.xcor() > 400 or ball.xcor() < -400:
-        ball.goto(0,0)
+
+    if ball.xcor() > 450:
+        player_one_score += 1
+        pen.clear()
+        pen.write(f'player 1: {player_one_score}                                           player 2: {player_two_score}',
+                  align='center', font=('Arial', 22, 'normal'))
+        ball.goto(0, 0)
+        ball.x_speed *= -1
+
+    elif ball.xcor() < -450:
+        player_two_score += 1
+        pen.clear()
+        pen.write(f'player 1: {player_one_score}                                           player 2: {player_two_score}',
+                  align='center', font=('Arial', 22, 'normal'))
+        ball.goto(0, 0)
         ball.x_speed *= -1
