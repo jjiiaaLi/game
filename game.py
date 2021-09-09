@@ -32,7 +32,7 @@ ball.shape('circle')
 ball.color('black')
 ball.penup()  # turtle default to drawing a line to movement and we dont want that
 ball.goto(0, 0)
-ball.x_speed = 2  #ball movement speed in x axis
+ball.x_speed = 4  #ball movement speed in x axis
 ball.y_speed = 2  #ball movement speed in y axis
 
 # Move paddle functions
@@ -68,13 +68,24 @@ wndw.onkeypress(paddle_b_down,'Down')
 
 
 
-
-
-
-
 # Main game loop
 while True:
     wndw.update()
 
     #move the ball
+    ball.setx(ball.xcor() + ball.x_speed)
+    ball.sety(ball.ycor() + ball.y_speed)
 
+    # Bounce off top and bottom borders
+    if ball.ycor() > 290 or ball.ycor() < -285:
+        ball.y_speed *= -1
+
+    if (ball.xcor() > 340 ) and ((paddle_b.ycor() - ball.ycor()) < 40 and (paddle_b.ycor() - ball.ycor()) > -40):
+        ball.x_speed *= -1
+
+    if (ball.xcor() < -340) and ((paddle_a.ycor() -  ball.ycor())<40 and (paddle_a.ycor()- ball.ycor()>-40)):
+        ball.x_speed *= -1
+
+    if ball.xcor() > 400 or ball.xcor() < -400:
+        ball.goto(0,0)
+        ball.x_speed *= -1
