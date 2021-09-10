@@ -34,6 +34,7 @@ enemy_x = 600
 enemy_y = 40
 enemy_delta_x = 2
 
+
 def enemy(x,y):
     display_window.blit(enemy_img,(x,y))
 
@@ -41,13 +42,19 @@ def enemy(x,y):
 laser_img = pygame.image.load('./images/laser.png')
 laser_x = 0
 laser_y = 0
-laser_y_delta = -9
+laser_y_delta = -10
 laser_state = 'ready'
 
 def fire_laser(x,y):
     global laser_state
     laser_state = 'fire'
     display_window.blit(laser_img,( x + 18, y + 19 ))
+
+
+#hit
+def hit(shot_x,shot_y,target_x,target_y):
+    if shot_y < (target_y + 50) and shot_y > (target_y - 30) and shot_x > (target_x - 30) and shot_x < (target_x + 30):
+        return True
 
 
 # Game loop
@@ -74,7 +81,7 @@ while running:
                 laser_state = 'fire'
                 laser_x = player_x
                 laser_y = player_y
-
+                
     
 
     player(player_x,player_y) # render the player image
@@ -97,6 +104,14 @@ while running:
         
     if laser_y < 0:
         laser_state = 'ready'
+
+    impact = hit(laser_x,laser_y,enemy_x,enemy_y)
+
+    if impact:
+        laser_state = 'ready'
+        enemy_x = random.randint(100,700)
+        enemy_y = random.randint(0,200)
+            
 
 
     pygame.display.update()
