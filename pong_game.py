@@ -34,7 +34,7 @@ ball.shapesize(stretch_wid=0.5, stretch_len=0.5)
 ball.penup()  # turtle default to drawing a line to movement and we dont want that
 ball.goto(0, 0)
 ball.x_speed = 4  # ball movement speed in x axis
-ball.y_speed = 2  # ball movement speed in y axis
+ball.y_speed = 1  # ball movement speed in y axis
 ball.x_saved = 0  # for when you press the pause button it saves the previous 
 ball.y_saved = 0  # velocity so it can return to moving in the exact same fashion upon unpause
 
