@@ -96,7 +96,6 @@ wndw.onkeypress(pause, 'p')
 
 # Main game loop
 
-
 while True:
     wndw.update()
 
