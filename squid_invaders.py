@@ -138,5 +138,4 @@ while running:
         enemy_y_list[last_hit] = random.randint(0,200)
             
 
-
     pygame.display.update()
