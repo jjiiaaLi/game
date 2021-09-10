@@ -30,9 +30,19 @@ def player(x,y):  #  function to be called to place player on the screen
 
 #enemy
 enemy_img = pygame.image.load('./images/enemy.png')
-enemy_x = 600
-enemy_y = 40
-enemy_delta_x = 2
+enemy_count = 3
+last_hit = 0
+enemy_x_list = []
+enemy_y_list = []
+enemy_x_change= []
+enemy_y_change =[]
+
+for i in range(enemy_count):
+    enemy_x_list.append(random.randint(100, 700))
+    enemy_y_list.append(random.randint(0, 200))
+    enemy_x_change.append(2)
+    enemy_y_change.append(50)
+
 
 
 def enemy(x,y):
@@ -92,11 +102,19 @@ while running:
         player_delta_x = 0
 
     #enemy initial enter
-    enemy(enemy_x, enemy_y)
-    enemy_x += enemy_delta_x
-    if enemy_x >740 or enemy_x < 20:
-        enemy_delta_x *= -1
-        enemy_y += 50
+
+    for i in range(enemy_count):
+        enemy_x = enemy_x_list[i]
+        enemy_y = enemy_y_list[i]
+
+        enemy(enemy_x, enemy_y)
+        enemy_x_list[i] += enemy_x_change[i]
+
+    for i in range(enemy_count):
+        if enemy_x_list[i] > 740 or enemy_x_list[i] < 20:
+            enemy_x_change[i] *= -1
+            enemy_y_list[i] += 50
+    
 
     if laser_state == 'fire':
         fire_laser(laser_x,laser_y)
@@ -104,13 +122,20 @@ while running:
         
     if laser_y < 0:
         laser_state = 'ready'
+ 
 
-    impact = hit(laser_x,laser_y,enemy_x,enemy_y)
+    #collision
+    impact = False
+    
+    for i in range(enemy_count):
+        if hit(laser_x,laser_y,enemy_x_list[i],enemy_y_list[i]):
+            last_hit = i
+            impact = True
 
     if impact:
         laser_state = 'ready'
-        enemy_x = random.randint(100,700)
-        enemy_y = random.randint(0,200)
+        enemy_x_list[last_hit] = random.randint(100,700)
+        enemy_y_list[last_hit] = random.randint(0,200)
             
 
 
