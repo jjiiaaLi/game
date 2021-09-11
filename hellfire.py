@@ -34,6 +34,8 @@ def tree(x,y):
 
 tank_x = 880
 tank_y = 600
+tank_x_delta = -0.3
+
 
 def tank(x,y):
     screen.blit(tank_img, (tank_x, tank_y))
@@ -49,8 +51,6 @@ ground = 600
 def missile(x,y):
     screen.blit(missile_img, (missile_x,missile_y))
 
-
-
 missile_state = 'unfired'
 
 forest_x= [400,429,450,465,500,535,550,930,945]
@@ -63,6 +63,10 @@ def intercept(target_x, target_y, self_x,self_y):
     frames_to_y_intercept_for_intercept = (alt_diff / frames_to_x_intercept)
 
     return frames_to_y_intercept_for_intercept
+
+target = 'tank'
+
+
 
 running = True
 while running:
@@ -81,6 +85,7 @@ while running:
 
     helicopter()
     tank(tank_x,tank_y)
+    tank_x += tank_x_delta
     enemy_helicopter(enemy_x,enemy_y)
     enemy_x += enemy_x_delta
     enemy_y += enemy_y_delta
@@ -95,14 +100,15 @@ while running:
         missile_y += missile_y_delta
     
     #collision with tank
-    # if missile_x > 500 and missile_y > ground +4:
-    #     missile_state = 'exploded'
-    #     screen.blit(blast_img,(missile_x,missile_y))
-    #     missile_x_delta=0
-    #     missile_y_delta=0
+    if missile_x > 500 and missile_y > ground +4 and target == 'tank':
+        missile_state = 'exploded'
+        screen.blit(blast_img,(missile_x,missile_y))
+        missile_x_delta=0
+        missile_y_delta=0
+        tank_x_delta = 0
 
-    #collision with aircraft
-    if abs(missile_x - enemy_x) < 2 :
+    # collision with aircraft
+    if abs(missile_x - enemy_x) < 3 and target == 'helicopter':
         missile_state = 'exploded'
         screen.blit(blast_img,(missile_x,missile_y))
         missile_x_delta= 0
@@ -120,14 +126,17 @@ while running:
     #     missile_y_delta = -1.4
 
     if missile_x > 270 and missile_x < 310:
-        enemy_x_delta = -1.5
-        enemy_y_delta = 0.2
+        if target == 'helicopter':
+            enemy_x_delta = -1.4
+            enemy_y_delta = 0.3
 
     if missile_x > 370 and missile_x < 500:
         missile_y_delta = 0
     
     # print(tank_x - missile_x, tank_y - missile_y)
     if missile_x > 500 and missile_state == 'fired':
-        missile_y_delta = intercept(enemy_x  ,enemy_y ,missile_x,missile_y)
-
+        if target == 'tank':
+            missile_y_delta = intercept(tank_x  ,tank_y ,missile_x,missile_y)
+        elif target == 'helicopter':
+            missile_y_delta = intercept(enemy_x, enemy_y, missile_x, missile_y)
     pygame.display.update()
