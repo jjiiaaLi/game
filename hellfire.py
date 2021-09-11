@@ -10,6 +10,7 @@ clock = pygame.time.Clock()
 
 #objects
 helicopter_img = pygame.image.load('./hellfire_imgs/helicopter.png')
+enemy_helicopter_img = pygame.image.load('./hellfire_imgs/enemy_helicopter.png')
 missile_img = pygame.image.load('./hellfire_imgs/projectile.png')
 tree_img = pygame.image.load('./hellfire_imgs/tree.png')
 tank_img = pygame.image.load('./hellfire_imgs/tank.png')
@@ -17,6 +18,16 @@ blast_img = pygame.image.load('./hellfire_imgs/blast.png')
 
 def helicopter():
     screen.blit(helicopter_img, (0, 570))
+
+
+enemy_x = 900
+enemy_y = 550
+enemy_x_delta = 0
+enemy_y_delta = 0
+
+def enemy_helicopter(x,y):
+    screen.blit(enemy_helicopter_img, (enemy_x,enemy_y))
+
 
 def tree(x,y):
     screen.blit(tree_img, (x,y))
@@ -30,8 +41,8 @@ def tank(x,y):
 
 missile_x = 33
 missile_y = 580
-missile_x_delta = 5
-missile_y_delta = -2
+missile_x_delta = 3
+missile_y_delta = 0
 
 ground = 600
 
@@ -69,7 +80,10 @@ while running:
 
 
     helicopter()
-    tank(tank_x, tank_y)
+    tank(tank_x,tank_y)
+    enemy_helicopter(enemy_x,enemy_y)
+    enemy_x += enemy_x_delta
+    enemy_y += enemy_y_delta
     
     for i in range(len(forest_x)):
         tree(forest_x[i],forest_y)
@@ -80,29 +94,40 @@ while running:
         missile_x += missile_x_delta
         missile_y += missile_y_delta
     
-    if missile_x > 500 and missile_y > ground +4:
+    #collision with tank
+    # if missile_x > 500 and missile_y > ground +4:
+    #     missile_state = 'exploded'
+    #     screen.blit(blast_img,(missile_x,missile_y))
+    #     missile_x_delta=0
+    #     missile_y_delta=0
+
+    #collision with aircraft
+    if abs(missile_x - enemy_x) < 2 :
         missile_state = 'exploded'
         screen.blit(blast_img,(missile_x,missile_y))
-        missile_x_delta=0
-        missile_y_delta=0
+        missile_x_delta= 0
+        missile_y_delta= 0
+        enemy_x_delta = 0
+        enemy_y_delta = 0
 
-    if missile_x > 70 and missile_x <120:
-        missile_y_delta = -4
+    if missile_x > 70 and missile_x <370:
+        missile_y_delta = -1
 
-    if missile_x > 120 and missile_x < 200:
-        missile_y_delta = -4.7
+    # if missile_x > 120 and missile_x < 200:
+    #     missile_y_delta = -1.7
 
-    if missile_x > 200 and missile_x < 270:
-        missile_y_delta = -4.4
+    # if missile_x > 200 and missile_x < 270:
+    #     missile_y_delta = -1.4
 
     if missile_x > 270 and missile_x < 310:
-        missile_y_delta = -4.2
+        enemy_x_delta = -1.5
+        enemy_y_delta = 0.2
 
     if missile_x > 370 and missile_x < 500:
         missile_y_delta = 0
     
     # print(tank_x - missile_x, tank_y - missile_y)
     if missile_x > 500 and missile_state == 'fired':
-        missile_y_delta = intercept(880  ,600 ,missile_x,missile_y)
+        missile_y_delta = intercept(enemy_x  ,enemy_y ,missile_x,missile_y)
 
     pygame.display.update()
