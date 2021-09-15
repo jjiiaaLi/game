@@ -49,28 +49,30 @@ projectile_y_delta = -2.5
 
 def intercept_x():
     
-    x_range = abs(aircraft_x - projectile_x)
-    y_range = abs(aircraft_y - projectile_y)
+    x_range = (aircraft_x - projectile_x)
+    y_range = (projectile_y - aircraft_y)
     
     # lead_amount = math.floor(x_range * 0.2)
     
     # new_x_range = x_range - lead_amount
 
-    frames_to_target = (math.sqrt(pow(x_range,2)+pow(y_range,2)))/abs(projectile_y_delta)
-    
+    # frames_to_target = (math.sqrt(pow(x_range,2)+pow(y_range,2)))/abs(projectile_y_delta)
+    frames_to_target = x_range / 2.5
+
     x = (x_range / frames_to_target)
     # y = -(y_range / frames_to_target)
-    return round(x,4)
+    return round(x,5)
    
-def intercept_y():
+# def intercept_y():
 
-    x_range = abs(aircraft_x - projectile_x)
-    y_range = abs(aircraft_y - projectile_y)
+#     x_range = (aircraft_x - projectile_x)
+#     y_range = (projectile_y - aircraft_y)
 
-    frames_to_target = (math.sqrt(pow(x_range, 2)+pow(y_range, 2)))/abs(projectile_y_delta)
+#     frames_to_target = (math.sqrt(pow(x_range, 2)+pow(y_range, 2)))/abs(projectile_y_delta)
 
-    y = -(y_range/frames_to_target)
-    return round(y,4)
+#     # y = -(y_range/frames_to_target)
+#     print(y_range,frames_to_target)
+#     # return round(y,4)
 
 running = True
 while running:
@@ -103,11 +105,11 @@ while running:
     if projectile_y < 600:
         x_course=intercept_x()
         projectile_x_delta= x_course
-        y_course= intercept_y()
-        projectile_y_delta = y_course
+        # y_course= intercept_y()
+        # projectile_y_delta = y_course
 
         
-        print(y_course)
+        # print(y_course)
 
     
 
