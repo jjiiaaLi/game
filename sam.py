@@ -20,10 +20,7 @@ def launcher():
 def aircraft(x,y):
     screen.blit(aircraft_img, (x,y))
 
-aircraft_x = 1100
-aircraft_y = 80
-aircraft_x_delta = -1.5
-aircraft_y_delta = 0
+
 
 def tree(x,y):
     screen.blit(tree_img,(x,y))
@@ -38,31 +35,42 @@ def projectile(x,y):
     screen.blit(projectile_img,(x,y))
 
 projectile_state = 'ready'
+
+aircraft_x = 990
+aircraft_y = 80
+aircraft_x_delta = -1.5
+aircraft_y_delta = 0
+
+
 projectile_x = 100
 projectile_y = 650
 projectile_x_delta = 0
 projectile_y_delta = -2.5
 
-def intercept(target_x,target_y, target_x_delta, target_y_delta,shot_x,shot_y, shot_y_delta):
-    res = []
-    x_range = abs(target_x - shot_x)
-    y_range = abs(shot_y - target_y)
+def intercept_x():
     
-    lead_amount = x_range * 0.1
-    lead_x = target_x - lead_amount
-    new_x_range = lead_x - shot_x
-    linear_range_to_lead = math.sqrt(pow(new_x_range, 2) + pow(y_range, 2))
-    time_to_target = linear_range_to_lead / abs(shot_y_delta)
-    new_y_speed = (y_range / time_to_target) 
-    new_x_speed = new_x_range / time_to_target
-    res.append(new_x_speed)
-    if new_y_speed >0:
-        res.append(new_y_speed *-1)
-    else:
-        res.append(new_y_speed)
-    res.append(time_to_target)
-    return res
+    x_range = abs(aircraft_x - projectile_x)
+    y_range = abs(aircraft_y - projectile_y)
+    
+    # lead_amount = math.floor(x_range * 0.2)
+    
+    # new_x_range = x_range - lead_amount
 
+    frames_to_target = (math.sqrt(pow(x_range,2)+pow(y_range,2)))/abs(projectile_y_delta)
+    
+    x = (x_range / frames_to_target)
+    # y = -(y_range / frames_to_target)
+    return round(x,4)
+   
+def intercept_y():
+
+    x_range = abs(aircraft_x - projectile_x)
+    y_range = abs(aircraft_y - projectile_y)
+
+    frames_to_target = (math.sqrt(pow(x_range, 2)+pow(y_range, 2)))/abs(projectile_y_delta)
+
+    y = -(y_range/frames_to_target)
+    return round(y,4)
 
 running = True
 while running:
@@ -87,15 +95,20 @@ while running:
     aircraft_y += aircraft_y_delta
 
     if projectile_state == 'fired':
-        screen.blit(projectile_img,(projectile_x, projectile_y))
-        course = intercept(aircraft_x, aircraft_y, aircraft_x_delta, aircraft_y_delta, projectile_x, projectile_y, projectile_y_delta)
-        print(course)
-        projectile_x_delta = course[0]
-        projectile_y_delta = course[1]
-    projectile_x += projectile_x_delta
-    projectile_y += projectile_y_delta
+        projectile(projectile_x,projectile_y)
+       
+        projectile_x += projectile_x_delta
+        projectile_y += projectile_y_delta
 
+    if projectile_y < 600:
+        x_course=intercept_x()
+        projectile_x_delta= x_course
+        y_course= intercept_y()
+        projectile_y_delta = y_course
 
+        
+        print(y_course)
 
+    
 
     pygame.display.update()
