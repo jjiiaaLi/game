@@ -1,3 +1,4 @@
 
 -i https://pypi.org/simple
 pygame == 2.0.1
+panda3d == 1.10.10
