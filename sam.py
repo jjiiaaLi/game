@@ -52,27 +52,22 @@ def intercept_x():
     x_range = (aircraft_x - projectile_x)
     y_range = (projectile_y - aircraft_y)
     
-    # lead_amount = math.floor(x_range * 0.2)
-    
-    # new_x_range = x_range - lead_amount
-
-    # frames_to_target = (math.sqrt(pow(x_range,2)+pow(y_range,2)))/abs(projectile_y_delta)
-    frames_to_target = x_range / 2.5
+   
+    frames_to_target = x_range / abs(projectile_y_delta)
 
     x = (x_range / frames_to_target)
-    # y = -(y_range / frames_to_target)
+   
     return round(x,5)
    
-# def intercept_y():
 
-#     x_range = (aircraft_x - projectile_x)
-#     y_range = (projectile_y - aircraft_y)
+def collision():
+    x_range = (aircraft_x - projectile_x)
+    y_range = (projectile_y - aircraft_y)
 
-#     frames_to_target = (math.sqrt(pow(x_range, 2)+pow(y_range, 2)))/abs(projectile_y_delta)
-
-#     # y = -(y_range/frames_to_target)
-#     print(y_range,frames_to_target)
-#     # return round(y,4)
+    if abs(x_range) < 5 or abs(y_range) < 5:
+        return True
+    else:
+        return False
 
 running = True
 while running:
@@ -105,12 +100,12 @@ while running:
     if projectile_y < 600:
         x_course=intercept_x()
         projectile_x_delta= x_course
-        # y_course= intercept_y()
-        # projectile_y_delta = y_course
-
         
-        # print(y_course)
+    impacted = collision()
 
-    
-
+    if impacted:
+        aircraft_x_delta = 0
+        blast(projectile_x,projectile_y) 
+        projectile_state = 'terminated'
+        
     pygame.display.update()
