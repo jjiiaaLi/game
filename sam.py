@@ -19,8 +19,7 @@ def launcher():
 
 def aircraft(x,y):
     screen.blit(aircraft_img, (x,y))
-
-
+    
 
 def tree(x,y):
     screen.blit(tree_img,(x,y))
