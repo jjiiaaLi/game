@@ -38,7 +38,7 @@ projectile_state = 'ready'
 
 aircraft_x = 990
 aircraft_y = 80
-aircraft_x_delta = -1.5
+aircraft_x_delta = -3.4
 aircraft_y_delta = 0
 
 
@@ -53,7 +53,9 @@ def intercept_x():
     x_range = (aircraft_x - projectile_x)
     y_range = (projectile_y - aircraft_y)
     
-   
+    if x_range > 10:
+        ten_percent = x_range * 0.9
+        x_range -= ten_percent
     frames_to_target = y_range / abs(projectile_y_delta)
 
     x = (x_range / frames_to_target)
@@ -91,6 +93,8 @@ while running:
     aircraft(aircraft_x,aircraft_y)
     aircraft_x += aircraft_x_delta
     aircraft_y += aircraft_y_delta
+
+   
 
     if projectile_state == 'fired':
         projectile(projectile_x,projectile_y)

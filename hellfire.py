@@ -64,7 +64,8 @@ def intercept(target_x, target_y, self_x,self_y):
 
     return frames_to_y_intercept_for_intercept
 
-target = 'tank'
+
+target = "tank"   # 'tank' or 'helicopter'
 
 
 
