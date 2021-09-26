@@ -8,6 +8,7 @@ clock = pygame.time.Clock()
 #objects
 sight_img = pygame.image.load('./images/sight.png')
 background_img = pygame.image.load('./images/background.jpg')
+ramen_img = pygame.image.load('./images/ramen.png')
 
 def background(x,y):
     screen.blit(background_img,(x,y))
@@ -20,7 +21,8 @@ def sight():
 
 bomb_state = 'ready'  # place holder for space command
 
-
+def ramen():
+    screen.blit(ramen_img,(0,0))
 
 running = True
 while running:
@@ -37,13 +39,14 @@ while running:
 
             if event.key == pygame.K_LEFT:
                 background_x_delta = 0.6
+                print('left')
             if event.key == pygame.K_RIGHT:
                 background_x_delta = -0.6
-            
+                print('right')
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                backgroud_x_delta = 0
-
+                print('stop')
+                background_x_delta = 0
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 bomb_state = 'pickle'
