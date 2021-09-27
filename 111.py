@@ -10,6 +10,37 @@ sight_img = pygame.image.load('./images/sight.png')
 background_img = pygame.image.load('./images/background.jpg')
 blast_img = pygame.image.load('./images/blast.png')
 
+class Explosion(pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        pygame.sprite.Sprite.__init__(self)
+        self.images = []
+        for num in range(1,6):
+            img = pygame.image.load(f'./images/explosion/exp{num}.png')
+            #scale with img = pygame.transform.scale(img,(100,100))
+            self.images.append(img)
+        self.index = 0
+        self.image = self.images[self.index]
+        self.rect = self.image.get_rect()
+        self.rect.center = [x,y]
+        self.counter = 0
+
+        
+
+    
+    def update(self):
+        explosion_speed = 4
+        #update explosion animation
+        self.counter += 1
+
+        if self.counter >= explosion_speed and self.index < len(self.images) -1:
+            self.counter = 0
+            self.index += 1
+            self.image = self.images[self.index]
+
+        #if animation is complete, reset animation index
+        if self.index >= len(self.images) - 1 and self.counter >= explosion_speed:
+            self.kill()
+
 def blast(x,y):
     screen.blit(blast_img,(x,y))
 
@@ -23,7 +54,7 @@ def background(x,y):
     screen.blit(background_img,(x,y))
 background_x = -900
 background_x_delta = 0
-background_y = -2080
+background_y = -1080
 background_y_delta = 0.7
 def sight():
     screen.blit(sight_img,(0,0))
@@ -31,8 +62,9 @@ def sight():
 bomb_state = 'ready'  # place holder for space command
 bomb_sight_rotate_count = 0
 
-def ramen():
-    screen.blit(ramen_img,(0,0))
+
+
+explosion_group = pygame.sprite.Group()
 
 running = True
 while running:
@@ -65,6 +97,9 @@ while running:
     background(background_x,background_y)
     background_x += background_x_delta
     background_y += background_y_delta
+
+    explosion_group.draw(screen)
+    explosion_group.update()
 
     sight()
 
